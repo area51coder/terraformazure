@@ -36,4 +36,4 @@ jobs:
       - name: Terraform Apply
         env:
           TERRAFORM_CLOUD_TOKEN: ${{ secrets.TERRAFORM_CLOUD_TOKEN }}   # Use GitHub secret for the token
-        run: terraform apply -auto-approve
+        run: terraform apply
