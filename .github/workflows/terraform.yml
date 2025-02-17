@@ -34,8 +34,6 @@ jobs:
 
       # Step 5: Apply Terraform changes
       - name: Terraform Apply
-        environment:
-          name: production   # Link this step to the "production" environment
-          url: ${{ steps.plan.outputs.url }}   # Optional: URL to view the plan
-        if: success()  # Only run this step if Plan was successful
-        run: terraform apply -auto-approve
+        env:
+          TERRAFORM_CLOUD_TOKEN: ${{ secrets.TERRAFORM_CLOUD_TOKEN }}   # Use GitHub secret for the token
+        run: terraform apply
