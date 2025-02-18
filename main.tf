@@ -1,13 +1,3 @@
-# Specify provider version if required
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "~> 3.0"  # You can specify the version you need
-    }
-  }
-}
-
 provider "azurerm" {
   client_id       = "33c3ef55-4dc3-44c7-8131-bebc98031f41"
   client_secret   = "hG.8Q~OOSrtG5e_4J1DMMcdo~2lza2BfIiEknbGX"
