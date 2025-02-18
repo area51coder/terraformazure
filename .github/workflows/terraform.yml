@@ -1,39 +1,39 @@
-name: Terraform CI/CD
+name: Terraform Plan and Apply
 
 on:
   push:
     branches:
-      - main  # Run when changes are pushed to the main branch
+      - main
 
 jobs:
-  terraform:
+  terraform-plan:
     runs-on: ubuntu-latest
-
+    name: Terraform Plan
     steps:
-      # Step 1: Checkout code
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Step 2: Set up Terraform
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_version: '1.0.0'   # Specify the version you want
 
-      # Step 3: Initialize Terraform with the API token for authentication
       - name: Terraform Init
-        env:
-          TERRAFORM_CLOUD_TOKEN: ${{ secrets.TERRAFORM_CLOUD_TOKEN }}   # Use GitHub secret for the token
         run: terraform init
 
-      # Step 4: Run Terraform Plan
       - name: Terraform Plan
-        env:
-          TERRAFORM_CLOUD_TOKEN: ${{ secrets.TERRAFORM_CLOUD_TOKEN }}   # Use GitHub secret for the token
         run: terraform plan
 
-      # Step 5: Apply Terraform changes
+  terraform-apply:
+    runs-on: ubuntu-latest
+    name: Terraform Apply
+    needs: terraform-plan  # Run after plan job
+    environment:
+      name: LAB  # The environment you created for approval
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
+
       - name: Terraform Apply
-        env:
-          TERRAFORM_CLOUD_TOKEN: ${{ secrets.TERRAFORM_CLOUD_TOKEN }}   # Use GitHub secret for the token
-        run: terraform apply  -auto-approve
+        run: terraform apply -auto-approve
