@@ -12,11 +12,11 @@ resource "azurerm_resource_group" "rg" {
 }
 
 
-terraform {
-  backend "remote" {
-    organization = "area51coder"
-    workspaces {
-      name = "azureterra"
-    }
-  }
-}
+#terraform {
+ # backend "remote" {
+  #  organization = "area51coder"
+   # workspaces {
+    #  name = "azureterra"
+    #}
+  #}
+#}
