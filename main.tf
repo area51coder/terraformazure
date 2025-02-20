@@ -10,3 +10,13 @@ resource "azurerm_resource_group" "rg" {
   name     = "myTFResourceGroup10"
   location = "westus2"
 }
+
+
+terraform {
+  backend "remote" {
+    organization = "area51coder"
+    workspaces {
+      name = "azureterra"
+    }
+  }
+}
