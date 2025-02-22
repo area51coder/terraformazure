@@ -32,7 +32,7 @@ jobs:
           workspace: ${{ env.TF_WORKSPACE }}
           directory: ${{ env.TF_DIRECTORY }}
           
-      - name: Terraform run 1
+      - name: Terraform run 2
         uses: hashicorp/tfc-workflows-github/actions/create-run@v1.3.0
         id: run
         with:
