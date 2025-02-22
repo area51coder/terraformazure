@@ -44,9 +44,12 @@ jobs:
 ## ...
 ## ...
       # Debug: Log the plan_id to verify it's correct
-      - name: Debug Plan ID
+      - name: Debug Plan Output (Detailed)
         run: |
           echo "Plan ID: ${{ steps.plan-run.outputs.plan_id }}"
+          echo "Plan Output: ${{ steps.plan-run.outputs }}"
+          curl -H "Authorization: Bearer ${{ secrets.TF_API_TOKEN }}" \ 
+                "https://app.terraform.io/api/v2/runs/${{ steps.plan-run.outputs.plan_id }}/actions"
 
       - name: Get Plan Output
         uses: hashicorp/tfc-workflows-github/actions/plan-output@v1.0.0
