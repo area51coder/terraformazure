@@ -52,15 +52,8 @@ jobs:
           plan: ${{ steps.plan-run.outputs.plan_id }}
         #  plan: ${{ fromJSON(steps.plan-run.outputs.payload).data.relationships.plan.data.id }}
         
-      - name: Install Terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: '1.10.5'  # You can specify the version you need here        
-      - name: Display Terraform Plan
-        run: |
-          echo "Fetching full plan output..."
-          terraform show -no-color ${{ steps.plan-run.outputs.plan_id }} > plan_output.txt
-          cat plan_output.txt
+    
+
 ## ...
 ## ...
       - name: Update PR
