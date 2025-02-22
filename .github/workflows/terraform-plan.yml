@@ -44,7 +44,7 @@ jobs:
         id: run
         with:
           run: ${{ steps.reference-run-id.outputs.run_id }}
-          run: |
+      - run: |
           echo "Latest Run Status: ${{ steps.run.outputs.run_status }}"     
 
       - name: show output
