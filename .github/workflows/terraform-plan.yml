@@ -43,8 +43,10 @@ jobs:
           plan_only: true
 ## ...
 ## ...
+      # Debug: Log the plan_id to verify it's correct
       - name: Debug Plan ID
-        run: echo "Plan ID: ${{ steps.plan-run.outputs.plan_id }}"
+        run: |
+          echo "Plan ID: ${{ steps.plan-run.outputs.plan_id }}"
 
       - name: Get Plan Output
         uses: hashicorp/tfc-workflows-github/actions/plan-output@v1.0.0
