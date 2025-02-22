@@ -23,6 +23,8 @@ jobs:
         uses: hashicorp/setup-terraform@v1
 
       - name: Terraform Init
+        env:
+          TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}   # Use GitHub secret for the token
         run: terraform init
 
       - name: Terraform Plan
