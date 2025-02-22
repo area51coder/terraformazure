@@ -52,9 +52,11 @@ jobs:
           plan: ${{ steps.plan-run.outputs.plan_id }}
         #  plan: ${{ fromJSON(steps.plan-run.outputs.payload).data.relationships.plan.data.id }}
         
-      - name: Output Plan Results
+      - name: Display Terraform Plan
         run: |
-          echo "Plan: ${{ steps.plan-output.outputs.add }} to add, ${{ steps.plan-output.outputs.change }} to change, ${{ steps.plan-output.outputs.destroy }} to destroy."
+          echo "Fetching full plan output..."
+          terraform show -no-color ${{ steps.plan-run.outputs.plan_id }} > plan_output.txt
+          cat plan_output.txt
 ## ...
 ## ...
       - name: Update PR
