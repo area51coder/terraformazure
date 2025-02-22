@@ -25,14 +25,16 @@ jobs:
 ## ...
 
 ## ...
-      - uses: hashicorp/tfc-workflows-github/actions/upload-configuration@v1.3.2
+      - name: Terraform run 1
+        uses: hashicorp/tfc-workflows-github/actions/upload-configuration@v1.3.2
         id: upload
         with:
           workspace: ${{ env.TF_WORKSPACE }}
           directory: ${{ env.TF_DIRECTORY }}
-
-     - uses: hashicorp/tfc-workflows-github/actions/create-run@v1.3.0
-       id: run
-       with:
-         workspace: ${{ env.TF_WORKSPACE }}
-         configuration_version: ${{ steps.upload.outputs.configuration_version_id }}
+          
+      - name: Terraform run 1
+        uses: hashicorp/tfc-workflows-github/actions/create-run@v1.3.0
+        id: run
+        with:
+          workspace: ${{ env.TF_WORKSPACE }}
+          configuration_version: ${{ steps.upload.outputs.configuration_version_id }}
