@@ -78,6 +78,13 @@ jobs:
             const botComment = comments.find(comment => {
               return comment.user.type === 'Bot' && comment.body.includes('HCP Terraform Plan Output')
             });
+            // Debugging outputs
+            console.log(steps.plan-output.outputs);  // Log outputs to verify their presence
+
+            // Use safe fallback values in case any output is missing
+            const add = steps.plan-output.outputs.add || '0';
+            const change = steps.plan-output.outputs.change || '0';
+            const destroy = steps.plan-output.outputs.destroy || '0';
             const output = `#### HCP Terraform Plan Output
                 \`\`\`
                 Plan: ${{ steps.plan-output.outputs.add }} to add, ${{ steps.plan-output.outputs.change }} to change, ${{ steps.plan-output.outputs.destroy }} to destroy.
