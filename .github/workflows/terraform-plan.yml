@@ -27,9 +27,16 @@ jobs:
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: '1.10.5'  # specify the Terraform version you need
+      - name: Terraform Login
+        run: terraform login
+        env:
+          TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+    
         
       - name: Initialize Terraform
         run: terraform init
+        env:
+          TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}        
 
       - name: Refresh Terraform State
         run: terraform refresh
