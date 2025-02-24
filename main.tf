@@ -6,8 +6,8 @@ provider "azurerm" {
   features {}
 }
 
-resource "azurerm_resource_group" "rg" {
-  name     = "myTFResourceGroup14"
+resource "azurerm_resource_group" "rg1" {
+  name     = "myTFResourceGroup16"
   location = "westus2"
 }
 
