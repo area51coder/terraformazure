@@ -33,13 +33,13 @@ resource "azurerm_virtual_network" "example" {
   name                = "my-vnet"
   address_space        = ["10.0.0.0/16"]
   location            = azurerm_resource_group.example.location
-  resource_group_name = azurerm_resource_group.example.name  # Correct reference
+  resource_group_name = azurerm_resource_group.example.name
 }
 
 # Create a Subnet
 resource "azurerm_subnet" "example" {
   name                 = "my-subnet"
-  resource_group_name  = azurerm_resource_group.example.name  # Correct reference
+  resource_group_name  = azurerm_resource_group.example.name
   virtual_network_name = azurerm_virtual_network.example.name
   address_prefix       = "10.0.1.0/24"
 }
@@ -48,7 +48,7 @@ resource "azurerm_subnet" "example" {
 resource "azurerm_public_ip" "example" {
   name                = "my-public-ip"
   location            = azurerm_resource_group.example.location
-  resource_group_name = azurerm_resource_group.example.name  # Correct reference
+  resource_group_name = azurerm_resource_group.example.name
   allocation_method   = "Dynamic"
 }
 
@@ -56,15 +56,21 @@ resource "azurerm_public_ip" "example" {
 resource "azurerm_network_interface" "example" {
   name                      = "my-nic"
   location                  = azurerm_resource_group.example.location
-  resource_group_name       = azurerm_resource_group.example.name  # Correct reference
-  network_interface_id      = azurerm_public_ip.example.id
+  resource_group_name       = azurerm_resource_group.example.name
   private_ip_address_allocation = "Dynamic"
+  subnet_id                = azurerm_subnet.example.id
+
+  ip_configuration {
+    name                          = "internal"
+    private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = azurerm_public_ip.example.id  # Correct way to reference public IP
+  }
 }
 
 # Create a Linux Virtual Machine (Free Tier - B1S)
 resource "azurerm_linux_virtual_machine" "example" {
   name                = "my-vm"
-  resource_group_name = azurerm_resource_group.example.name  # Correct reference
+  resource_group_name = azurerm_resource_group.example.name
   location            = azurerm_resource_group.example.location
   size                = "Standard_B1s"  # Free tier size
   admin_username      = "azureuser"
@@ -72,11 +78,15 @@ resource "azurerm_linux_virtual_machine" "example" {
     username   = "azureuser"
     public_key = file("~/.ssh/id_rsa.pub")  # Your public SSH key path
   }
-  network_interface_ids = [azurerm_network_interface.example.id]
+  
+  # Correct usage of network_interface_ids
+  network_interface_ids = [azurerm_network_interface.example.id]  # Correct reference
+  
   os_disk {
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
   }
+  
   source_image_reference {
     publisher = "Canonical"
     offer     = "UbuntuServer"
