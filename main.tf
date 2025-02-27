@@ -23,7 +23,7 @@ terraform {
 
 
 # Create a Linux Virtual Machine (Free Tier - B1S)
-resource "azurerm_linux_virtual_machine" "example" {
+resource "azurerm_linux_virtual_machine" "linuxvm" {
   name                = "my-vm"
   resource_group_name = myTFResourceGroup16
   location            = westus2
@@ -33,8 +33,7 @@ resource "azurerm_linux_virtual_machine" "example" {
     username   = "azureuser"
     public_key = file("~/.ssh/id_rsa.pub")  # Your public SSH key path
   }
-  network_interface_ids = [azurerm_network_interface.example.id]
-  os_disk {
+    os_disk {
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
   }
