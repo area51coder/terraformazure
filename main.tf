@@ -25,8 +25,8 @@ terraform {
 # Create a Linux Virtual Machine (Free Tier - B1S)
 resource "azurerm_linux_virtual_machine" "example" {
   name                = "my-vm"
-  resource_group_name = azurerm_resource_group.example.name
-  location            = myTFResourceGroup16
+  resource_group_name = myTFResourceGroup16
+  location            = westus2
   size                = "Standard_B1s"  # Free tier size
   admin_username      = "azureuser"
   admin_ssh_key {
