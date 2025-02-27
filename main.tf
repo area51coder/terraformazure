@@ -57,13 +57,13 @@ resource "azurerm_network_interface" "example" {
   name                      = "my-nic"
   location                  = azurerm_resource_group.example.location
   resource_group_name       = azurerm_resource_group.example.name
-  private_ip_address_allocation = "Dynamic"
   subnet_id                = azurerm_subnet.example.id
 
+  # ip_configuration block
   ip_configuration {
     name                          = "internal"
-    private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.example.id  # Correct way to reference public IP
+    private_ip_address_allocation = "Dynamic"  # Correct placement inside ip_configuration
+    public_ip_address_id          = azurerm_public_ip.example.id  # Associate public IP
   }
 }
 
@@ -79,8 +79,8 @@ resource "azurerm_linux_virtual_machine" "example" {
     public_key = file("~/.ssh/id_rsa.pub")  # Your public SSH key path
   }
   
-  # Correct usage of network_interface_ids
-  network_interface_ids = [azurerm_network_interface.example.id]  # Correct reference
+  # Correct reference of network interface IDs
+  network_interface_ids = [azurerm_network_interface.example.id]
   
   os_disk {
     caching              = "ReadWrite"
