@@ -41,7 +41,7 @@ resource "azurerm_subnet" "example" {
   name                 = "my-subnet"
   resource_group_name  = azurerm_resource_group.example.name
   virtual_network_name = azurerm_virtual_network.example.name
-  address_prefix       = "10.0.1.0/24"
+  address_prefixes     = ["10.0.1.0/24"]  # Use address_prefixes instead of address_prefix
 }
 
 # Create a Public IP address
@@ -57,13 +57,13 @@ resource "azurerm_network_interface" "example" {
   name                      = "my-nic"
   location                  = azurerm_resource_group.example.location
   resource_group_name       = azurerm_resource_group.example.name
-  subnet_id                = azurerm_subnet.example.id
 
   # ip_configuration block
   ip_configuration {
     name                          = "internal"
     private_ip_address_allocation = "Dynamic"  # Correct placement inside ip_configuration
     public_ip_address_id          = azurerm_public_ip.example.id  # Associate public IP
+    subnet_id                     = azurerm_subnet.example.id  # Associate subnet in ip_configuration block
   }
 }
 
