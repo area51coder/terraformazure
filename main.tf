@@ -20,3 +20,28 @@ terraform {
     }
   }
 }
+
+
+# Create a Linux Virtual Machine (Free Tier - B1S)
+resource "azurerm_linux_virtual_machine" "example" {
+  name                = "my-vm"
+  resource_group_name = azurerm_resource_group.example.name
+  location            = myTFResourceGroup16
+  size                = "Standard_B1s"  # Free tier size
+  admin_username      = "azureuser"
+  admin_ssh_key {
+    username   = "azureuser"
+    public_key = file("~/.ssh/id_rsa.pub")  # Your public SSH key path
+  }
+  network_interface_ids = [azurerm_network_interface.example.id]
+  os_disk {
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
+  }
+  source_image_reference {
+    publisher = "Canonical"
+    offer     = "UbuntuServer"
+    sku       = "20.04-LTS"
+    version   = "latest"
+  }
+}
