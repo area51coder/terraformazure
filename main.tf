@@ -22,18 +22,58 @@ terraform {
 }
 
 
+# Create a resource group
+resource "azurerm_resource_group" "example" {
+  name     = "myTFResourceGroup16"  # Resource group ka naam
+  location = "East US"
+}
+
+# Create a Virtual Network
+resource "azurerm_virtual_network" "example" {
+  name                = "my-vnet"
+  address_space        = ["10.0.0.0/16"]
+  location            = azurerm_resource_group.example.location
+  resource_group_name = azurerm_resource_group.example.name  # Correct reference
+}
+
+# Create a Subnet
+resource "azurerm_subnet" "example" {
+  name                 = "my-subnet"
+  resource_group_name  = azurerm_resource_group.example.name  # Correct reference
+  virtual_network_name = azurerm_virtual_network.example.name
+  address_prefix       = "10.0.1.0/24"
+}
+
+# Create a Public IP address
+resource "azurerm_public_ip" "example" {
+  name                = "my-public-ip"
+  location            = azurerm_resource_group.example.location
+  resource_group_name = azurerm_resource_group.example.name  # Correct reference
+  allocation_method   = "Dynamic"
+}
+
+# Create a Network Interface
+resource "azurerm_network_interface" "example" {
+  name                      = "my-nic"
+  location                  = azurerm_resource_group.example.location
+  resource_group_name       = azurerm_resource_group.example.name  # Correct reference
+  network_interface_id      = azurerm_public_ip.example.id
+  private_ip_address_allocation = "Dynamic"
+}
+
 # Create a Linux Virtual Machine (Free Tier - B1S)
-resource "azurerm_linux_virtual_machine" "linuxvm" {
+resource "azurerm_linux_virtual_machine" "example" {
   name                = "my-vm"
-  resource_group_name = myTFResourceGroup16
-  location            = westus2
+  resource_group_name = azurerm_resource_group.example.name  # Correct reference
+  location            = azurerm_resource_group.example.location
   size                = "Standard_B1s"  # Free tier size
   admin_username      = "azureuser"
   admin_ssh_key {
     username   = "azureuser"
     public_key = file("~/.ssh/id_rsa.pub")  # Your public SSH key path
   }
-    os_disk {
+  network_interface_ids = [azurerm_network_interface.example.id]
+  os_disk {
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
   }
@@ -43,4 +83,9 @@ resource "azurerm_linux_virtual_machine" "linuxvm" {
     sku       = "20.04-LTS"
     version   = "latest"
   }
+}
+
+# Output the public IP address of the VM
+output "public_ip" {
+  value = azurerm_public_ip.example.ip_address
 }
