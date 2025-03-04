@@ -17,8 +17,9 @@ terraform {
 
 
 
+
 resource "azurerm_resource_group" "rg" {
-  name     = "myTFResourceGroup"
+  name     = "myTFResourceGroup2"
   location = "westus2"
     tags = {
     Environment = "Terraform Getting Started"
@@ -35,3 +36,4 @@ resource "azurerm_virtual_network" "vnet" {
   location            = "westus2"
   resource_group_name = azurerm_resource_group.rg.name
 }
+
